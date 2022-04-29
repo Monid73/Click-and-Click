@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Картонки</title>
+    <style>
+        .background {
+            background-image: url(background.png);
+            background-size: cover;
+            background-repeat: repeat-y;
+        }
+        .box{
+            background-size: 100% 100%;
+            width:100px;
+            height:100px;
+            position: absolute;
+        }
+        .d-none {
+            display: none;
+        }
+        .d-flex {
+            display: flex;
+        }
+        .score_list {
+            left: 400px;
+            top: -100px;
+            height: 20px;
+            background: none;
+            position: absolute;
+            font-size: 30px;
+            transition: 1s;
+        }
+
+        .time_list {
+            left: 1300px;
+            top: -100px;
+            height: 50px;
+            background: none;
+            position: absolute;
+            font-size: 30px;
+            transition: 1s;
+        }
+
+        .m-auto {
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .tutorial {
+            left: 780px;
+            top: 431px;
+            width: 300px;
+            height: 500px;
+            background-color: none;
+            position: absolute;
+            transition: 1s;
+        }
+        .btn {
+            left: 880px;
+            top: 631px;
+            position: absolute;
+        }
+        .fonts {
+            text-align: center;
+            margin-top: 200px;
+            font-size: 25px;
+        }
+        .word {
+            left: 130px;
+            top: 0px;
+            position: absolute;
+            transition: 1s;
+        }
+        .circle_info {
+            left: 625px;
+            top: -150px;
+            width: 150px;
+            height: 150px;
+            position: absolute;
+            background-color: none;
+            transition: 2s;
+        }
+        .triangle_info {
+            left: 850px;
+            top: -150px;
+            width: 150px;
+            height: 150px;
+            position: absolute;
+            background-color: none;
+            transition: 2s;
+        }
+        .square_info {
+            left: 1075px;
+            top: -150px;
+            width: 150px;
+            height: 150px;
+            position: absolute;
+            background-color: none;
+            transition: 2s;
+        }
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="background">
+    <!--Скрыть кнопки-->
+    <p class="word fonts">Стреляй по картонкам, а именно по мишеням. У тебя будет только 10 секунд, чтобы набить 30 опыта. Нажми на меня, чтобы заткнуть и начать игру!</p>
+    <button class="btn"> Начать игру</button>
+    <div class="score_list">Очки: <span class="score"></span></div>
+    <div class="time_list">Секунд осталось: <span class="time"></span></div>
+    <div class="tutorial m-auto">
+        <img src="NPC.png">
+    </div>
+    <div class="circle_info">
+        <img src="one_info.png">
+    </div>
+    <div class="triangle_info">
+        <img src="two_info.png">
+    </div>
+    <div class="square_info">
+        <img src="minus_info.png">
+    </div>
+    <div></div>
+    <div></div>
+    <script>
+
+        let box = document.querySelector(".box")
+        let word = document.querySelector(".word");
+        let tutor = document.querySelector(".tutorial");
+        let btn = document.querySelector(".btn");
+        let score_list = document.querySelector(".score_list")
+        let time_list = document.querySelector(".time_list")
+        let circle_info = document.querySelector(".circle_info")
+        let triangle_info = document.querySelector(".triangle_info")
+        let square_info = document.querySelector(".square_info")
+        let int1;
+        let int2;
+
+        let y = [200, 400, 600];
+        let images = ["uno_point.png", "one_more_point.png", "one_point.png", "more_two_points.png", "two_points.png", "alot_points.png", "minus_points.png", "non_points.png"];
+        let score = 0;
+        let time = 10;
+        let left_move = 780;
+        let down_move = -100;
+        let up_move = 0
+        let info_down = -150
+        let right_move = -100
+        box = 1000
+
+        tutor.onclick = function(){
+                    left_move = left_move - 1200;
+                    tutor.style.left = left_move + "px"
+
+                    down_move = down_move + 200;
+                    score_list.style.top = down_move + "px"
+                    time_list.style.top = down_move + "px"
+
+                    up_move = up_move - 400;
+                    word.style.top = up_move + "px"
+
+                    info_down = info_down + 150;
+                    circle_info.style.top = info_down + "px"
+                    triangle_info.style.top = info_down + "px"
+                    square_info.style.top = info_down + "px"
+                }
+
+        btn.onclick = function(){
+            int1 =  setInterval(create, 300);
+            int2 = setInterval(Tack, 1000)
+            setTimeout(finish, 10200);
+            btn.style.display = "none"
+        }
+
+        function getRandom(num){
+            let rand = Math.random() * num; 
+            let round = Math.round(rand); 
+            return round;
+        }
+
+        function finish(){
+            clearInterval(int1);
+            clearInterval(int2);
+            if (score == 30) {
+                alert("Ура, победа")
+            }else if (score >= 30) {
+                alert("Ладно, победа, но и 30 было бы достаточно");
+            } else alert("Соболезную, проиграл") 
+
+            } 
+
+        function Tack(){
+            time = time - 1;
+            document.querySelector(".time").innerHTML = time;
+        }
+
+        document.querySelector(".score").innerHTML = score;
+        document.querySelector(".time").innerHTML = time;
+
+        function create(){
+            let elem = document.createElement('div'); 
+            document.body.appendChild(elem); 
+            elem.classList.add("box");
+            elem.style.left = getRandom(1700) + "px";
+            box = elem + "px"
+            elem.style.top = y[getRandom(2)] + "px";
+
+            let randomImg = getRandom(7);
+            elem.style.backgroundImage = "url(" + images[randomImg] + ")";
+
+            if(randomImg == 0){
+                 elem.type = "norm";
+            }else if(randomImg == 1){
+                elem.type = "norm"
+            }else if(randomImg == 2){
+                elem.type = "norm"
+            }else if(randomImg == 3){
+                elem.type = "good"
+            }else if(randomImg == 4){
+                elem.type = "good";
+            }else if(randomImg == 5){
+                elem.type = "good"
+            }else if(randomImg == 6){
+                elem.type = "bad";
+            }else if(randomImg == 7){
+                elem.type = "bad"
+            }
+            elem.onclick = function(){
+                elem.style.display = "none";
+                if(elem.type == "norm"){
+                    score = score + 1;
+                }else if(elem.type == "good"){
+                    score = score + 2;
+                }else if(elem.type == "bad"){
+                    score = score - 2;
+                }
+
+                console.log("Очки " + score);
+            }
+            document.querySelector(".score").innerHTML = score;
+        }
+        
+
+    </script>
+</body>
+</html>
